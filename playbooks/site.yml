@@ -1,0 +1,14 @@
+---
+- name: Apply common Linux settings
+  hosts: all
+  become: true
+  gather_facts: true
+  roles:
+    - common
+
+- name: Configure internal web server
+  hosts: web
+  become: true
+  gather_facts: true
+  roles:
+    - web

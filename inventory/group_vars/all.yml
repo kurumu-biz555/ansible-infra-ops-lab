@@ -1,0 +1,20 @@
+---
+timezone: Asia/Tokyo
+
+common_packages:
+  - vim
+  - curl
+  - wget
+  - net-tools
+  - bind-utils
+  - lsof
+  - tar
+  - unzip
+  - chrony
+  - rsyslog
+  - firewalld
+
+common_services:
+  - firewalld
+  - chronyd
+  - rsyslog

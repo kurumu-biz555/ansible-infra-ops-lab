@@ -1,0 +1,46 @@
+---
+- name: Check Apache configuration syntax
+  ansible.builtin.command: httpd -t
+  register: apache_configtest
+  changed_when: false
+
+- name: Show Apache configuration syntax result
+  ansible.builtin.debug:
+    msg:
+      - "Return code: {{ apache_configtest.rc }}"
+      - "Output: {{ apache_configtest.stderr | default(apache_configtest.stdout) }}"
+
+- name: Gather service facts
+  ansible.builtin.service_facts:
+
+- name: Assert Apache service is running
+  ansible.builtin.assert:
+    that:
+      - ansible_facts.services[web_service_name + ".service"].state == "running"
+    fail_msg: "{{ web_service_name }} is not running."
+    success_msg: "{{ web_service_name }} is running."
+
+- name: Check HTTP port is listening
+  ansible.builtin.wait_for:
+    host: 127.0.0.1
+    port: "{{ web_http_port }}"
+    state: started
+    timeout: 5
+  register: web_port_status
+  changed_when: false
+
+- name: Show HTTP port check result
+  ansible.builtin.debug:
+    msg: "Port {{ web_http_port }} is listening on 127.0.0.1."
+
+- name: Check HTTP response from localhost
+  ansible.builtin.uri:
+    url: "{{ web_healthcheck_url }}"
+    status_code: 200
+    return_content: false
+  register: http_response
+  changed_when: false
+
+- name: Show HTTP status code
+  ansible.builtin.debug:
+    msg: "HTTP status code: {{ http_response.status }}"

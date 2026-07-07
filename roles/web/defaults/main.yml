@@ -1,0 +1,8 @@
+---
+web_package_name: httpd
+web_service_name: httpd
+web_document_root: /var/www/html
+web_index_owner: root
+web_index_group: root
+web_index_mode: "0644"
+web_http_port: 80

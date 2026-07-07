@@ -1,0 +1,4 @@
+---
+web_service_name: httpd
+web_http_port: 80
+web_healthcheck_url: http://127.0.0.1/

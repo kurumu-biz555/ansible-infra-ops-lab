@@ -1,0 +1,5 @@
+# Copy this file to inventory/hosts.ini and edit it for your local environment.
+# Do not commit inventory/hosts.ini because it may contain real connection data.
+
+[web]
+rocky-web01 ansible_host=192.168.56.101 ansible_user=your_user
