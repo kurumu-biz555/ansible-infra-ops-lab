@@ -9,7 +9,7 @@
 | ホスト名 | 役割 | OS | IP アドレス例 |
 | --- | --- | --- | --- |
 | ansible-control | Ansible 実行サーバ | Rocky Linux 9 または Ubuntu Server | 192.168.56.10 |
-| rocky-web01 | 操作対象 Web サーバ | Rocky Linux 9 | 192.168.56.101 |
+| rocky-target01 | 操作対象サーバー | Rocky Linux 9 | 192.168.56.101 |
 
 ## ネットワーク
 
@@ -18,6 +18,6 @@
 
 ## 実行前提
 
-- `ansible-control` から `rocky-web01` へ SSH 接続できること
+- `ansible-control` から操作対象サーバーへ SSH 接続できること
 - inventory に指定したユーザーで権限昇格できること
 - 実 IP、実ユーザー名、秘密鍵パスを Git 管理しないこと

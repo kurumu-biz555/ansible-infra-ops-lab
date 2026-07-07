@@ -53,11 +53,27 @@ ansible-infra-ops-lab/
 │   └── web_verify/
 └── docs/
     ├── 00_environment.md
-    ├── 01_design_decisions.md
-    └── 02_operation_check.md
+    ├── 01_ansible_manager_setup.md
+    ├── 02_server_build.md
+    ├── 03_operation_check.md
+    └── 04_design_decisions.md
 ```
 
+## ドキュメント
+
+- [検証環境設計](docs/00_environment.md)
+- [Ansible マネージャー構築](docs/01_ansible_manager_setup.md)
+- [サーバー構築手順](docs/02_server_build.md)
+- [運用確認手順](docs/03_operation_check.md)
+- [設計判断](docs/04_design_decisions.md)
+
 ## 実行順序
+
+Ansible 実行サーバーを準備します。
+
+```text
+docs/01_ansible_manager_setup.md
+```
 
 実 inventory を作成します。
 
