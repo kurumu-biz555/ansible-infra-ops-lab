@@ -4,19 +4,25 @@ Status: Portfolio draft / Role-based structure
 
 ## 概要
 
-`ansible-infra-ops-lab` は、社内イントラ環境を想定した Linux サーバの初期構築と運用確認を Ansible で自動化するポートフォリオ用リポジトリです。
+`ansible-infra-ops-lab` は、Linux サーバの構築と運用確認を Ansible で整理するポートフォリオ用リポジトリです。
 
-VirtualBox 上の Rocky Linux 9 検証環境を想定し、共通初期設定、Apache HTTP Server 構築、構築後の運用確認を分けて管理します。
+VirtualBox 上の Rocky Linux 9 検証環境を想定し、以下の3つを分けて管理する構成にしています。
+
+- 共通部: OS 初期設定、共通パッケージ、共通サービス
+- 固有部: サーバ用途ごとに変わる設定
+- 運用部: 構築後に確認したい状態確認
 
 ## 目的
 
-単に Apache をインストールするだけでなく、以下を説明できる構成にすることを目的とします。
+単にパッケージを入れるだけでなく、以下を説明できる構成にすることを目的とします。
 
 - 共通設定と用途別設定を分離する
 - Playbook は役割の呼び出しに寄せ、処理本体は role にまとめる
 - 構築 Playbook と確認 Playbook を分ける
 - 実 inventory を公開せず、example だけを Git 管理する
 - 構築後に人手で確認しがちな作業を Ansible で確認する
+
+現在の実装例として、固有部には Web サーバ構成を置いています。Web サーバの具体的な内容は、コードと技術メモ側で説明する前提です。
 
 ## 想定環境
 
@@ -26,7 +32,7 @@ VirtualBox 上の Rocky Linux 9 検証環境を想定し、共通初期設定、
 | 操作対象サーバ | Rocky Linux 9 |
 | 仮想化環境 | VirtualBox |
 | 接続方式 | SSH |
-| 対象用途 | 社内イントラ向け基本 Web サーバ |
+| 対象用途 | Linux サーバ構築・運用確認の検証 |
 
 ## 構成
 
@@ -66,7 +72,7 @@ vi inventory/hosts.ini
 ansible all -m ping
 ```
 
-共通設定と Web サーバ構築を実行します。
+共通設定と用途別設定を実行します。
 
 ```bash
 ansible-playbook playbooks/site.yml
@@ -80,9 +86,9 @@ ansible-playbook playbooks/verify_web.yml
 
 ## 実務寄りにした点
 
-- `roles/common`、`roles/web`、`roles/web_verify` に分け、処理の責務を明確にしています。
-- `playbooks/site.yml` は構築、`playbooks/verify_web.yml` は確認に分けています。
-- `group_vars/all.yml` には共通値、`group_vars/web.yml` には Web 用の値を置いています。
+- `roles/common`、用途別 role、確認用 role に分け、処理の責務を明確にしています。
+- `playbooks/site.yml` は構築、確認用 Playbook は構築後の状態確認に分けています。
+- `group_vars/all.yml` には共通値、用途別の group_vars には個別値を置いています。
 - 外部 collection に依存しないよう、初期版では `ansible.builtin` を中心にしています。
 - `firewall-cmd` は標準モジュールだけで扱うため command を使い、事前確認で冪等性を保つ形にしています。
 
